@@ -1,2 +1,2 @@
 flask==2.3.3
-pytest
+pytest==8.0.0
