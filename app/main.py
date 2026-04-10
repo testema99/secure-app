@@ -1,20 +1,19 @@
-from flask import Flask, request, jsonify
+from app.main import app
 
-app = Flask(__name__)
+def test_hello():
+    client = app.test_client()
+    response = client.get("/hello")
+    assert response.status_code == 200
+    assert response.get_json()["message"] == "Hello, Secure World!"
 
-@app.route("/hello", methods=["GET"])
-def hello():
-    return jsonify({"message": "Hello, Secure World!"})
+def test_add_success():
+    client = app.test_client()
+    response = client.post("/add", json={"x": 2, "y": 3})
+    assert response.status_code == 200
+    assert response.get_json()["result"] == 5
 
-@app.route("/add", methods=["POST"])
-def add():
-    data = request.get_json()
-    try:
-        x = int(data.get("x"))
-        y = int(data.get("y"))
-    except (TypeError, ValueError):
-        return jsonify({"error": "Invalid input"}), 400
-    return jsonify({"result": x + y})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+def test_add_invalid():
+    client = app.test_client()
+    response = client.post("/add", json={"x": "a", "y": 3})
+    assert response.status_code == 400
+    assert "error" in response.get_json()
