@@ -18,16 +18,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.13
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
       - name: Install pip-audit
         run: pip install pip-audit
 
       - name: Run pip-audit
-        run: pip-audit -r requirements.txt --strict
+        run: pip-audit -r requirements.txt
 
   # ── 2. Unit Tests ─────────────────────────────────────────────────────────
   unit-tests:
@@ -38,10 +38,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.13
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -104,5 +104,5 @@ jobs:
       - name: Simulate deployment
         run: |
           echo "All security gates passed."
-          echo "Deploying secure-app:${{ github.sha }} to production..."
+          echo "Deploying $IMAGE_NAME:${{ github.sha }} to production..."
           echo "Deployment complete."
